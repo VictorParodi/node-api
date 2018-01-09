@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/VictorParodi/node-api#readme",
   "dependencies": {
-    "mongodb": "^3.0.1"
+    "mongodb": "^2.2.5"
   }
 }
