@@ -6,7 +6,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (error, db) => {
     }
 
     // findOneAndDelete()
-    db.collection('Todo')
+    db.collection('Todos')
         .findOneAndDelete({
             text: 'Walk the cat'
         })
