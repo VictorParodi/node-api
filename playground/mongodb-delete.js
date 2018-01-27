@@ -14,7 +14,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (error, db) => {
             console.log(result);
         })
         .catch((error) => {
-            console.log('Delete action faild', error);
+            console.log('Delete action failed', error);
         });
 
     // deleteMany()
