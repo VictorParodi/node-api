@@ -1,55 +1,28 @@
-const mongoose = require('mongoose');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+const {mongoose} = require('./db/mongoose');
+const {Todo} = require('./models/todo');
+const {User} = require('./models/user');
 
-// const Todo = mongoose.model('Todo', {
-//     text: {
-//         type: String
-//     },
-//     completed: {
-//         type: Boolean
-//     },
-//     competedAt: {
-//         type: Number
-//     }
-// });
+let app = express();
 
-// const newTodo = new Todo({
-//     text: 'Kill the dragon'
-// });
+app.use(bodyParser.json());
 
-// newTodo.save()
-//     .then((result) => {
-//         console.log('Saved todo', result);
-//     })
-//     .catch((error) => {
-//         console.log('Saved data action failed');
-//     });
-
-const User = mongoose.model('User', {
-    email: {
-        type: String,
-        required: true,
-        trim: true,
-        length: 1
-    }
-});
-
-const newUser = new User({
-    email: '          jdoe@mail.com'
-});
-
-newUser.save()
-    .then((doc) => {
-        console.log('Saved document:', doc);
-        console.log('');
-    })
-    .catch((e) => {
-        console.log('Inserting action failed');
+app.post('/todos', (req, res) => {
+    let todo = new Todo({
+        text: req.body.text
     });
 
-let server = newUser;
+    todo.save()
+    .then((doc) => {
+        res.send(doc);
+    })
+    .catch((e) => {
+        res.status(400).send(e);
+    });
+});
 
-
-module.exports = { server };
+app.listen(3000, () => {
+    console.log('Application running on port 3000');
+});
