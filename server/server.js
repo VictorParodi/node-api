@@ -1,28 +1,27 @@
-const mongoose = require('mongoose');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
+const {mongoose} = require('./db/mongoose');
+const {Todo} = require('./models/todo');
 
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+let app = express();
 
-const User = mongoose.model('User', {
-  name: {
-    type: String
-  },
+app.use(bodyParser.json());
 
-  age: {
-    type: Number
-  }
+app.post('/todos', (req, res) => {
+    const todo = new Todo({
+        text: req.body.text
+    });
+
+    todo.save()
+        .then((doc) => {
+            res.send(doc);
+        })
+        .catch((e) => {
+            res.status(400).send(e);
+        });
 });
 
-const newUser = new User({
-  name: 'Allison',
-  age: 25
+app.listen(3000, () => {
+    console.log('Application running on port 3000');
 });
-
-newUser.save()
-  .then((doc) => {
-    console.log('Saved doc:', doc);
-  })
-  .catch((e) => {
-    console.log('Inserting action failed');
-  });
